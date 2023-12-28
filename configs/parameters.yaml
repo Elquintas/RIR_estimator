@@ -18,6 +18,6 @@ batch_train: 32
 batch_test: 16
 
 lr: 0.001
-epochs: 5
+epochs: 30
 
 num_workers: 1
