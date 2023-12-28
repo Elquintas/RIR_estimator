@@ -222,7 +222,7 @@ def main():
         data = rir_gen(data,columns,room_size,audio,mats,i,path_rir)
 
     # Stores data in the csv (train, test, val manifest)
-    data.to_csv(cfg['full_corpus_file'])
+    data.to_csv(cfg['corpus_file'])
     
 
 if __name__ == "__main__":

@@ -1,27 +1,23 @@
+# "RIR_estimator" CONFIG FILE
 
 data_dir: './data/'
-
-material_index: './resources/materials_index_pra.csv' 
-corpus_samples: 20
-dirac: './resources/burst_balloon.wav'
-rir_dir: './data/rir_clips/'
-full_corpus_file: './data/full_corpus.csv'
-
-# train.py separates the corpus into train, val, test splits
-full_corpus: './data/full_corpus.csv'
-
-#train_file: './data/train_rir_corpus_materials.csv'
-#test_file: './data/test_rir_corpus_materials.csv'
-#val_file: './data/val_rir_corpus_materials.csv'
-
 sampling_rate: 16000
 
-# Training Hyperparameters
+# CORPUS GENERATION PARAMETERS:
+
+material_index: './resources/materials_index_pra.csv'
+dirac: './resources/burst_balloon.wav'
+rir_dir: './data/rir_clips/'
+corpus_file: './data/full_corpus.csv'
+
+corpus_samples: 20
+
+
+# TRAINING PARAMETERS:
 batch_train: 32
 batch_test: 16
 
 lr: 0.001
 epochs: 20
 
-# Number of workers
 num_workers: 1

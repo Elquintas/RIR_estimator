@@ -24,7 +24,7 @@ def load_config(config_path):
 
 def train_val_test_split(cfg):
 
-    corpus = pd.read_csv(cfg['full_corpus'], sep=',')
+    corpus = pd.read_csv(cfg['corpus_file'], sep=',')
 
     
     train, test = train_test_split(corpus, 
