@@ -122,7 +122,8 @@ def rir_gen(data,columns,dims,audio,mats,nr,path_rir):
         [x_dim, y_dim, z_dim],
         fs=16000,
         materials=m,
-        air_absorption=True
+        air_absorption=True,
+        max_order=10
     )
 
     # Adding the source

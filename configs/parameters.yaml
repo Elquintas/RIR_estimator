@@ -6,11 +6,11 @@ sampling_rate: 16000
 # CORPUS GENERATION PARAMETERS:
 
 material_index: './resources/materials_index_pra.csv'
-dirac: './resources/burst_balloon.wav'
+dirac: './data/diracs/burst_balloon.wav'
 rir_dir: './data/rir_clips/'
 corpus_file: './data/full_corpus.csv'
 
-corpus_samples: 20
+corpus_samples: 25000
 
 
 # TRAINING PARAMETERS:
