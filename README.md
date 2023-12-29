@@ -44,9 +44,10 @@ Repository structure:
 		- load.py
 	> /models/
 		- model.py
-	> /resources/
+	> /utils/
 		- materials_index_pra.csv
-		- burst_balloon.wav
+		- plot_rir.py
+		- results_analysis.py
 	> /results/
 	> /pre-trained/
 
