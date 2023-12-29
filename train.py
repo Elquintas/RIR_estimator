@@ -1,11 +1,13 @@
 import sys
 import torch
 import torchaudio
+import numpy as np
 import torch.nn as nn
 import yaml
 import pandas as pd
 import lightning as L
 import dataloader.load
+
 from models.model import conv_model, conv_model_multi_task
 from torch.utils.data import DataLoader
 from sklearn.model_selection import train_test_split
@@ -13,16 +15,28 @@ from sklearn.model_selection import train_test_split
 torch.manual_seed(42)
 torch.cuda.manual_seed(42)
 
-def load_config(config_path):
-    try:
-        with open(config_path, 'r') as file:
-            config = yaml.safe_load(file)
-        return config
-    except Exception as e:
-        print('Error reading the config file')
-        sys.exit()
+# Load config file
+yaml_path = './configs/parameters.yaml'
+with open(yaml_path, 'r') as file:
+    cfg = yaml.safe_load(file)
 
-def train_val_test_split(cfg):
+
+def save_results_to_df(results,test_df):
+
+    filenames = test['rir_file']
+
+    columns=['ref_125Hz','ref_250Hz','ref_500Hz','ref_1000Hz',
+             'ref_2000Hz','ref_4000Hz','pred_125Hz','pred_250Hz','pred_500Hz',
+             'pred_1000Hz','pred_2000Hz','pred_4000Hz','ref_x','ref_y','ref_z',
+             'pred_x','pred_y','pred_z']
+    
+    df = pd.DataFrame(results.numpy(),columns=columns)
+    df['filenames'] = filenames
+    df.to_csv(cfg['results_dir']+'/results.csv')
+    return
+
+
+def train_val_test_split():
 
     corpus = pd.read_csv(cfg['corpus_file'], sep=',')
 
@@ -50,13 +64,14 @@ def train_val_test_split(cfg):
 def main():
 
     # Load parameters.yaml file (configs)
-    config_path = './configs/parameters.yaml'
-    cfg = load_config(config_path)
+    #config_path = './configs/parameters.yaml'
+    #cfg = load_config(config_path)
 
     sequential = dataloader.load.load_data
 
     # Splits the full corpus previously generated in manifests
-    train, val, test = train_val_test_split(cfg)
+    train, val, test = train_val_test_split()
+
 
     # Create Dataset objects for the different manifests
     train_set = sequential(train)
@@ -78,7 +93,7 @@ def main():
     
 
     # define model and lightning module
-    if cfg['multi-task'] == True:
+    if cfg['multi-task']:
         # Predicts mean absorption coefficients and room geometry
         cnn_model = conv_model_multi_task()
     else:
@@ -91,6 +106,12 @@ def main():
 
     # test model
     trainer.test(cnn_model,dataloaders=testloader)
+    
+    # Test results are stored in model.test_results tensor
+    save_results_to_df(cnn_model.test_results,test)
+    
+
+
 
     # Check training progress on tensorboard by:
     # $ tensorboard --logdir=lightning_logs/

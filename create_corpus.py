@@ -199,7 +199,15 @@ def main():
     mats = pd.read_csv(mats_index)
 
     # x_min,x_max,y_min,y_max,z_min,z_,max
-    room_size=[1.5,20, 1.5,10, 2.5,4]
+    x_min = cfg['x_min']
+    x_max = cfg['x_max']
+    y_min = cfg['y_min']
+    y_max = cfg['y_max']
+    z_min = cfg['z_min']
+    z_max = cfg['z_max']
+    
+    #room_size=[1.5,20, 1.5,10, 2.5,4]
+    room_size=[x_min,x_max,y_min,y_max,z_min,z_max]
 
     # Loading an audiofile to serve as source to create the RIR
     dirac = cfg['dirac']  

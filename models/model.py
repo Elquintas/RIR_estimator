@@ -4,11 +4,16 @@ import torch
 import lightning as L
 import torch.nn as nn
 import torch.nn.functional as F
+#from pytorch_lightning import  TrainResult
+
 
 # Load config file
 yaml_path = './configs/parameters.yaml'
 with open(yaml_path, 'r') as file:
     cfg = yaml.safe_load(file)
+
+
+
 
 ##############################################################
 #                                                            #
@@ -20,6 +25,9 @@ class conv_model(L.LightningModule):
     def __init__(self):
         super().__init__()
         
+        self.save_hyperparameters()
+        self.test_results = torch.empty((0, 12), dtype=torch.float32)
+
         self.relu = nn.ReLU()
         self.sigmoid = nn.Sigmoid()
 
@@ -114,14 +122,23 @@ class conv_model(L.LightningModule):
                        y6.unsqueeze(dim=0)),0)
         y = torch.transpose(y, 0, 1)
         test_loss = F.mse_loss(y.float(),y_pred)
-        self.log("test_loss",test_loss)
 
+        self.log("test_loss",test_loss)
     
+        outputs = torch.cat((y.float(),y_pred),-1)
+
+        self.test_results = torch.cat((self.test_results,outputs),0)
+
+
+
 
     def configure_optimizers(self):
-        #optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
         optimizer = torch.optim.Adam(self.parameters(), lr=cfg['lr'])
         return optimizer
+
+
+
+
 
 ##############################################################
 #                                                            #
@@ -132,6 +149,11 @@ class conv_model(L.LightningModule):
 class conv_model_multi_task(L.LightningModule):
     def __init__(self):
         super().__init__()
+
+        self.save_hyperparameters()
+        self.test_step_outputs = []
+    
+        self.test_results = torch.empty((0, 18), dtype=torch.float32)
 
         self.relu = nn.ReLU()
         self.sigmoid = nn.Sigmoid()
@@ -212,10 +234,12 @@ class conv_model_multi_task(L.LightningModule):
         y = torch.transpose(y, 0, 1)
 
         loss = cfg['loss_weight_abspt']*F.mse_loss(y.float(),y_pred) +\
-                cfg['loss_weight_geom']*F.mse_loss(g.float(),g_pred)
+               cfg['loss_weight_geom']*F.mse_loss(g.float(),g_pred)
         
         self.log("train_loss",loss)
+                
         return loss
+        
 
     def validation_step(self, batch, batch_idx):
         x, y1,y2,y3,y4,y5,y6, g_x,g_y,g_z = batch
@@ -236,7 +260,7 @@ class conv_model_multi_task(L.LightningModule):
 
         val_loss = cfg['loss_weight_abspt']*F.mse_loss(y.float(),y_pred) +\
                 cfg['loss_weight_geom']*F.mse_loss(g.float(),g_pred)
-        
+
         self.log("val_loss",val_loss)
 
     def test_step(self,batch, batch_idx):
@@ -256,17 +280,20 @@ class conv_model_multi_task(L.LightningModule):
 
         g = torch.transpose(g, 0, 1)
         y = torch.transpose(y, 0, 1)
-
+        
         test_loss = cfg['loss_weight_abspt']*F.mse_loss(y.float(),y_pred) +\
                 cfg['loss_weight_geom']*F.mse_loss(g.float(),g_pred)
         
         self.log("test_loss",test_loss)
-
+        
+        outputs = torch.cat((y.float(),y_pred,g.float(),g_pred),-1)
+        
+        self.test_results = torch.cat((self.test_results,outputs),0)       
 
 
     def configure_optimizers(self):
-        #optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
         optimizer = torch.optim.Adam(self.parameters(), lr=cfg['lr'])
         return optimizer
+
 
 
