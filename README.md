@@ -48,8 +48,8 @@ Repository structure:
 		- materials_index_pra.csv
 		- burst_balloon.wav
 	> /results/
-		...
-	
+	> /pre-trained/
+
 	- .gitignore
 	- README.md
 	- requirements.txt

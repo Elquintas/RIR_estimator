@@ -22,7 +22,8 @@ with open(yaml_path, 'r') as file:
 
 
 def save_results_to_df(results,test_df):
-
+    
+    test = pd.read_csv(test_df,sep=',')
     filenames = test['rir_file']
 
     columns=['ref_125Hz','ref_250Hz','ref_500Hz','ref_1000Hz',

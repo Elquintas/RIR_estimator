@@ -15,19 +15,19 @@ with open(yaml_path, 'r') as file:
 def print_coefs(y_hat):
 
     print("Frequency band absorption coefficients:\n")
-    print("125Hz ---- {}".format(round(y_hat[0][0],2)))
-    print("250Hz ---- {}".format(round(y_hat[0][1],2)))
-    print("500Hz ---- {}".format(round(y_hat[0][2],2)))
-    print("1000Hz --- {}".format(round(y_hat[0][3],2)))
-    print("2000Hz --- {}".format(round(y_hat[0][4],2)))
-    print("4000Hz --- {}".format(round(y_hat[0][5],2)))
+    print("125Hz ---- {}".format(round(y_hat[0][0],4)))
+    print("250Hz ---- {}".format(round(y_hat[0][1],4)))
+    print("500Hz ---- {}".format(round(y_hat[0][2],4)))
+    print("1000Hz --- {}".format(round(y_hat[0][3],4)))
+    print("2000Hz --- {}".format(round(y_hat[0][4],4)))
+    print("4000Hz --- {}".format(round(y_hat[0][5],4)))
 
 def print_geom(g_hat):
 
     print("\nRoom geometry estimation:\n")
-    print("Length (x): {}".format(round(g_hat[0][0])))
-    print("Width  (y): {}".format(round(g_hat[0][1])))
-    print("Height (z): {}".format(round(g_hat[0][2])))
+    print("Length (x): {} meters".format(round(g_hat[0][0],2)))
+    print("Width  (y): {} meters".format(round(g_hat[0][1],2)))
+    print("Height (z): {} meters".format(round(g_hat[0][2],2)))
 
 
 def main():
@@ -40,7 +40,7 @@ def main():
 
     waveform, sample_rate = torchaudio.load(path_rir)
 
-    ckpt_path = "./lightning_logs/version_5/checkpoints/epoch=4-step=1095.ckpt"
+    ckpt_path = "./pre-trained/checkpoint-base.ckpt"
 
     if cfg['multi-task'] == True:
         # Predicts mean absorption coefficients and room geometry
