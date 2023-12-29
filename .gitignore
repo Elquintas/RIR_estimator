@@ -2,5 +2,6 @@
 /data/rir_clips/*.wav
 /data/*.csv
 /data/manifests/*.csv
-/resources/git_cmds.txt
+/utils/git_cmds.txt
 /results/*.csv
+
