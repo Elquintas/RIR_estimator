@@ -19,6 +19,12 @@ The second part of the global recipe corresponds to the train/test procedure:
 
 This script uses the corpus generated previously and separates it into the different manifests (train, val and test). The dataloaders can be found described in the load.py file, while the model and lightning module can be found on the model.py script. Two classes of systems are proposed, both based on CNNs. The first one predicts only the weighted mean absorption coefficients, while the second predicts the coefficients in tandem with the room geometry (width, length and height), using a multi-task learning methodology.
 
+Results are stored in a .csv file under the results directory. Inferences can be run using the following command
+
+	$ python predict.py path/to/rir.wav
+
+This script predicts the absorption coefficients (and room geometry, if multi-task) given a specific checkpoint and rir file.
+
 Progress can be tracked using tensorboard:
 
 	$ tensorboard --logdir=lightning_logs/
@@ -41,11 +47,14 @@ Repository structure:
 	> /resources/
 		- materials_index_pra.csv
 		- burst_balloon.wav
+	> /results/
+		...
+	
 	- .gitignore
 	- README.md
 	- requirements.txt
 	- create_corpus.py
 	- train.py
-
+	- predict.py
 
 
