@@ -135,7 +135,8 @@ class load_data(Dataset):
 
         return waveform, self.mean_125[idx], self.mean_250[idx],\
                 self.mean_500[idx],self.mean_1000[idx],\
-                self.mean_2000[idx],self.mean_4000[idx]
+                self.mean_2000[idx],self.mean_4000[idx],\
+                self.room_x[idx], self.room_y[idx], self.room_z[idx]
 
 
 

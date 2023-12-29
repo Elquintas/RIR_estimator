@@ -6,7 +6,7 @@ import yaml
 import pandas as pd
 import lightning as L
 import dataloader.load
-from models.model import conv_model   #, Lightning_CNN
+from models.model import conv_model, conv_model_multi_task
 from torch.utils.data import DataLoader
 from sklearn.model_selection import train_test_split
 
@@ -78,7 +78,12 @@ def main():
     
 
     # define model and lightning module
-    cnn_model = conv_model()
+    if cfg['multi-task'] == True:
+        # Predicts mean absorption coefficients and room geometry
+        cnn_model = conv_model_multi_task()
+    else:
+        # Predicts mean absorption coefficients
+        cnn_model = conv_model()
 
     # train model
     trainer = L.Trainer(max_epochs=cfg['epochs'])

@@ -1,19 +1,29 @@
-# "RIR_estimator" CONFIG FILE
+####################################################
+#           RIR ESTIMATOR CONFIG FILE              #
+####################################################
 
 data_dir: './data/'
 sampling_rate: 16000
 
-# CORPUS GENERATION PARAMETERS:
+#####################################################
+#          CORPUS GENERATION PARAMETERS:            #
+#####################################################
 
 material_index: './resources/materials_index_pra.csv'
 dirac: './data/diracs/burst_balloon.wav'
 rir_dir: './data/rir_clips/'
-corpus_file: './data/full_corpus.csv'
 
+corpus_file: './data/full_corpus.csv'
 corpus_samples: 10000
 
+#####################################################
+#              TRAINING PARAMETERS:                 #             
+#####################################################
 
-# TRAINING PARAMETERS:
+multi-task: True
+loss_weight_abspt: 0.95
+loss_weight_geom: 0.05
+
 batch_train: 32
 batch_test: 16
 
