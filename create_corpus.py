@@ -140,7 +140,13 @@ def rir_gen(data,columns,dims,audio,mats,nr,path_rir):
     filename =  path_rir + 'rir_room_' +str(nr) +'.wav'
     waveform = room.rir[0][0]
     
-    # Padding to 0.5s (all files are greatly under this val...)
+    # Calculates theoretical room reverberation time. This will be
+    # important to invert sabine's law in order to regress the baseline
+    # mean absorption coefficients
+    rt60 = room.measure_rt60()
+    rt60 = rt60[0][0]
+
+    # Padding to 0.5s
     if len(waveform)>8000:
         waveform = waveform[0:8000]
         
@@ -148,10 +154,15 @@ def rir_gen(data,columns,dims,audio,mats,nr,path_rir):
         dif = 8000-len(waveform)
         pad = [0]*dif
         waveform = np.concatenate((waveform,pad))
+ 
 
     # generates white noise and adds it to the signal
     noise = np.random.normal(0, 1, size=8000)
     waveform = mix_audio(waveform, noise, snr=30)
+
+    # [0,1] normalization of raw waveform
+    v = waveform   
+    waveform[:] = (v - v.min()) / (v.max() - v.min())
 
     # saves rir as a .wav file
     wavfile.write(filename,room.fs,waveform)
@@ -168,6 +179,8 @@ def rir_gen(data,columns,dims,audio,mats,nr,path_rir):
     micro = pd.DataFrame([[x_m,y_m,z_m]],
             columns=['x_m', 'y_m', 'z_m'])
 
+    rt60 = pd.DataFrame([[rt60]],columns=['rt60'])
+
     coefs = pd.concat([filename,
                        ceiling_,
                        floor_,
@@ -177,7 +190,8 @@ def rir_gen(data,columns,dims,audio,mats,nr,path_rir):
                        south_,
                        dimensions,
                        source,
-                       micro], axis=1)
+                       micro,
+                       rt60], axis=1)
     
     coefs = coefs.values.tolist()
     
@@ -224,7 +238,7 @@ def main():
              'MAT_s','s_125Hz','s_250Hz','s_500Hz','s_1kHz','s_2kHz','s_4kHz',
              'room_x','room_y','room_z',
              'source_x','source_y','source_z',
-             'micro_x','micro_y','micro_z']
+             'micro_x','micro_y','micro_z','rt60']
     
     data = pd.DataFrame([],columns=columns)
 

@@ -64,9 +64,6 @@ def train_val_test_split():
 
 def main():
 
-    # Load parameters.yaml file (configs)
-    #config_path = './configs/parameters.yaml'
-    #cfg = load_config(config_path)
 
     sequential = dataloader.load.load_data
 
@@ -109,10 +106,7 @@ def main():
     trainer.test(cnn_model,dataloaders=testloader)
     
     # Test results are stored in model.test_results tensor
-    save_results_to_df(cnn_model.test_results,test)
-    
-
-
+    save_results_to_df(cnn_model.test_results,test) 
 
     # Check training progress on tensorboard by:
     # $ tensorboard --logdir=lightning_logs/

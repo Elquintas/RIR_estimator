@@ -2,18 +2,33 @@ import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+import pyroomacoustics as pra
 
 def main():
     
-    if len(sys.argv) != 2:
-        print('usage: python results_analysis.py /path/to/results/file.csv')
+    if len(sys.argv) != 3:
+        print('usage: python results_analysis.py /path/to/results/file.csv /path/to/test.csv')
         sys.exit()
     
     res_filename = sys.argv[1]
-     
+    test_filename = sys.argv[2] 
+
+    print(res_filename,test_filename)
+
     df = pd.read_csv(res_filename, sep=',')
-    
+    df_t = pd.read_csv(test_filename, sep=',')
+
+        
+
+    # Gets sabine coefficients from theoretical rt60.
+    sab_coefs=[]
+    for i in range(len(df_t)):
+        sab = pra.inverse_sabine(df_t['rt60'][i],
+                [df_t['room_x'][i],df_t['room_y'][i],df_t['room_z'][i]])
+        sab_coefs.append(sab[0])
+
+
+
     # Absolute error
     band1 = (df['ref_125Hz']-df['pred_125Hz']).abs()
     band2 = (df['ref_250Hz']-df['pred_250Hz']).abs()
