@@ -15,7 +15,7 @@ dirac: './data/diracs/burst_balloon.wav'
 rir_dir: './data/rir_clips/'
 
 corpus_file: './data/full_corpus.csv'
-corpus_samples: 10000
+corpus_samples: 1000
 
 # Room dimensions
 x_min: 1.5
@@ -40,6 +40,6 @@ batch_train: 32
 batch_test: 16
 
 lr: 0.001
-epochs: 42
+epochs: 1 #42
 
 num_workers: 1
