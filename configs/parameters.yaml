@@ -15,17 +15,17 @@ dirac: './data/diracs/burst_balloon.wav'
 rir_dir: './data/rir_clips/'
 
 corpus_file: './data/full_corpus.csv'
-corpus_samples: 1000
+corpus_samples: 10000
 
 # Room dimensions
 x_min: 1.5
 x_max: 20
 
 y_min: 1.5
-y_max: 10
+y_max: 20
 
 z_min: 2.5
-z_max: 4
+z_max: 10
 
 
 #####################################################
