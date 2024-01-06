@@ -166,11 +166,15 @@ class conv_model_multi_task(L.LightningModule):
                                stride=1,
                                padding='valid')
 
+        self.bn_c1 = nn.BatchNorm1d(64)
+
         self.conv2 = nn.Conv1d(in_channels=64,
                                out_channels=32,
                                kernel_size=17,
                                stride=1,
                                padding='valid')
+        
+        self.bn_c2 = nn.BatchNorm1d(32)
 
         self.conv3 = nn.Conv1d(in_channels=32,
                                out_channels=16,
@@ -178,8 +182,13 @@ class conv_model_multi_task(L.LightningModule):
                                stride=1,
                                padding='valid')
 
+        self.bn_c3 = nn.BatchNorm1d(16)
+
         self.fc1 = nn.Linear(1936,512)
+        self.bn_fc1 = nn.BatchNorm1d(512)
         self.fc2 = nn.Linear(512,32)
+        self.bn_fc2 = nn.BatchNorm1d(32)
+
 
         self.fc_absorptions = nn.Linear(32,6)
         self.fc_geometry = nn.Linear(32,3)
@@ -188,23 +197,28 @@ class conv_model_multi_task(L.LightningModule):
 
         x = self.conv1(audio_tensor)
         x = self.relu(x)
+        x = self.bn_c1(x)
         x = self.maxpool(x)
 
         x = self.conv2(x)
         x = self.relu(x)
+        x = self.bn_c2(x)
         x = self.maxpool(x)
 
         x = self.conv3(x)
         x = self.relu(x)
+        x = self.bn_c3(x)
         x = self.maxpool(x)
 
         x = torch.flatten(x, start_dim=1)
 
         x = self.fc1(x)
         x = self.relu(x)
+        x = self.bn_fc1(x)
 
         x = self.fc2(x)
         x = self.relu(x)
+        x = self.bn_fc2(x)
 
         x_out1 = self.fc_absorptions(x)
         x_out1 = self.sigmoid(x_out1)

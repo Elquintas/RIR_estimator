@@ -123,9 +123,13 @@ def rir_gen(data,columns,dims,audio,mats,nr,path_rir):
         fs=16000,
         materials=m,
         air_absorption=True,
-        max_order=10,
-        ray_tracing=True
+        max_order=cfg['max_order'],
+        ray_tracing=cfg['ray_tracing']
     )
+
+    # Sets up the ray tracer
+    if cfg['ray_tracing']:
+        room.set_ray_tracing(n_rays=cfg['nr_rays'], receiver_radius=0.5)
 
     # Adding the source
     room.add_source(np.array([x_s,y_s,z_s]), signal=audio)

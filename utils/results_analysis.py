@@ -78,14 +78,14 @@ def main():
     fig, ax = plt.subplots()
     ax.bar(x_pos, CTEs, yerr=error, align='center', alpha=0.5, 
             ecolor='black', capsize=10)
-    ax.set_ylabel('Absolute Error',fontsize=40)
+    ax.set_ylabel('Absolute Error',fontsize=50)
     ax.set_xticks(x_pos)
     ax.set_xticklabels(bands)
     ax.set_title('Frequency bands absorption level coefficients',
-            fontsize=40)
+            fontsize=50)
     ax.yaxis.grid(True)
-    plt.xticks(fontsize=30)
-    plt.yticks(fontsize=30)
+    plt.xticks(fontsize=40)
+    plt.yticks(fontsize=40)
     plt.show()
 
 
@@ -99,14 +99,14 @@ def main():
     fig, ax = plt.subplots()
     ax.bar(x_pos, CTEs, yerr=error, align='center', alpha=0.5,
             ecolor='black', capsize=10)
-    ax.set_ylabel('Absolute Error (meters)',fontsize=40)
+    ax.set_ylabel('Absolute Error (meters)',fontsize=50)
     ax.set_xticks(x_pos)
     ax.set_xticklabels(dist)
     ax.set_title('Room measurements (x,y,z)',
-            fontsize=40)
+            fontsize=50)
     ax.yaxis.grid(True)
-    plt.xticks(fontsize=30)
-    plt.yticks(fontsize=30)
+    plt.xticks(fontsize=40)
+    plt.yticks(fontsize=40)
     plt.show()
     
 

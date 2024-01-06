@@ -15,7 +15,11 @@ dirac: './data/diracs/burst_balloon.wav'
 rir_dir: './data/rir_clips/'
 
 corpus_file: './data/full_corpus.csv'
-corpus_samples: 10000
+corpus_samples: 20000
+
+ray_tracing: True
+nr_rays: 50000
+max_order: 50
 
 # Room dimensions
 x_min: 1.5
@@ -33,13 +37,13 @@ z_max: 10
 #####################################################
 
 multi-task: True
-loss_weight_abspt: 0.95
-loss_weight_geom: 0.05
+loss_weight_abspt: 0.10 #0.95
+loss_weight_geom: 0.90 # 0.05
 
 batch_train: 32
 batch_test: 16
 
-lr: 0.001
-epochs: 1 #42
+lr: 0.01
+epochs: 3  #27 #42
 
 num_workers: 1
